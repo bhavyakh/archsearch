@@ -23,6 +23,8 @@ class _InputPageState extends State<InputPage> {
     if (response.statusCode == 200) {
       var decodedJson = json.decode(response.body);
       _shops = Shops.fromJson(decodedJson);
+
+      print(_shops);
       setState(() {});
     }
   }
@@ -30,6 +32,7 @@ class _InputPageState extends State<InputPage> {
   @override
   void initState() {
     requestData();
+    setState(() {});
     super.initState();
   }
 
@@ -40,100 +43,114 @@ class _InputPageState extends State<InputPage> {
           title: Text('ArchSearch'),
         ),
         body: Container(
-          height: MediaQuery.of(context).size.height * 0.8,
-          child: ListView.builder(
-              shrinkWrap: true,
-              itemBuilder: (BuildContext context, int index) {
-                _shopName = _shops.detailedEvent[index];
-                return Container(
-                  height : MediaQuery.of(context).size.height * 0.78,
-                  child: ListView(
+            height: MediaQuery.of(context).size.height * 0.8,
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.78,
+              child: ListView(
+                children: <Widget>[
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: Text(
-                              'LIST OF ALL NEARBY SHOPS',
-                              style: TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ), //fix style and bold font size
+                      Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: Text(
+                          'LIST OF ALL NEARBY SHOPS',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
                           ),
-                          FlatButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => result()));
-                            },
-                            child: Container(
-                              height: 150,
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                                  children: <Widget>[
-                                    Row(
+                        ), //fix style and bold font size
+                      ),
+                      ListView.builder(
+                          shrinkWrap: true,
+                          itemBuilder: (BuildContext context, int index) {
+                            if (_shopName != null) {
+                              _shopName = _shops.detailedEvent[index];
+                              return FlatButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => result()));
+                                },
+                                child: Container(
+                                  height: 150,
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
                                       children: <Widget>[
-                                        Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 10),
-                                            child: Container(
-                                                width: 120.0,
-                                                height: 120.0,
-                                                decoration: new BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    image: new DecorationImage(
-                                                        fit: BoxFit.fill,
-                                                        image: new NetworkImage(
-                                                            'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg'))),
-                                                child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.center,
-                                                    children: <Widget>[
-                                                      Text(
-                                                          _shopName.name ??
-                                                              'SHOP NAME',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Color(
+                                        Row(
+                                          children: <Widget>[
+                                            Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 10),
+                                                child: Container(
+                                                    width: 120.0,
+                                                    height: 120.0,
+                                                    decoration: new BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        image: new DecorationImage(
+                                                            fit: BoxFit.fill,
+                                                            image: new NetworkImage(
+                                                                'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg'))),
+                                                    child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: <Widget>[
+                                                          Text(
+                                                              _shopName.name ??
+                                                                  'SHOP NAME',
+                                                              style: TextStyle(
+                                                                  color: Color(
                                                                       0xFFEB1555),
-                                                              fontWeight:
-                                                                  FontWeight.w900,
-                                                              fontSize: 30.0)),
-                                                      Text(
-                                                          _shopName.address ??
-                                                              'ADDRESS',
-                                                          style: TextStyle(
-                                                              color: Color(
-                                                                  0xFF8D8E98),
-                                                              fontSize: 18.0)),
-                                                      Text(
-                                                          _shopName.pincode ??
-                                                              'PINCODE',
-                                                          style: TextStyle(
-                                                              color: Color(
-                                                                  0xFF8D8E98),
-                                                              fontSize: 18.0))
-                                                    ])))
-                                      ],
-                                    )
-                                  ]),
-                              margin: EdgeInsets.all(15),
-                              decoration: BoxDecoration(
-                                color: Color(0xFF1D1E33),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w900,
+                                                                  fontSize:
+                                                                      30.0)),
+                                                          Text(
+                                                              _shopName
+                                                                      .address ??
+                                                                  'ADDRESS',
+                                                              style: TextStyle(
+                                                                  color: Color(
+                                                                      0xFF8D8E98),
+                                                                  fontSize:
+                                                                      18.0)),
+                                                          Text(
+                                                              _shopName
+                                                                      .pincode ??
+                                                                  'PINCODE',
+                                                              style: TextStyle(
+                                                                  color: Color(
+                                                                      0xFF8D8E98),
+                                                                  fontSize:
+                                                                      18.0))
+                                                        ])))
+                                          ],
+                                        )
+                                      ]),
+                                  margin: EdgeInsets.all(15),
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFF1D1E33),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                              );
+                            } else {
+                              return Text(
+                                'Loading..',
+                                style: TextStyle(
+                                    fontSize: 23, color: Colors.white),
+                              );
+                            }
+                          }),
                     ],
-                  ),
-                );
-              }),
-        ));
+                  )
+                ],
+              ),
+            )));
   }
 }

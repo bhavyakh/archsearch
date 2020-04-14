@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'customersignup.dart';
 import 'shopkeepersignup.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 import 'dart:convert';
 import 'models.dart';
 
@@ -102,13 +101,12 @@ class _State extends State<welcome> {
                     child: MaterialButton(
                       onPressed: () async {
                         var result = await request(email, password);
-                        if(result!= null){
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => InputPage()));
+                        if (result != null) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => InputPage()));
                         }
-                    
                       },
                       minWidth: 200.0,
                       height: 42.0,
@@ -127,12 +125,12 @@ class _State extends State<welcome> {
                     borderRadius: BorderRadius.circular(30.0),
                     child: MaterialButton(
                       onPressed: () async {
-                         var result = await request2(email, password);
-                        if(result){
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => shopkeeper()));
+                        var result = await request2(email, password);
+                        if (result) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => shopkeeper()));
                         }
                       },
                       minWidth: 200.0,
@@ -206,14 +204,14 @@ request(String email, String password) async {
 
     String token = decodeJson['token'].toString();
 
-    
     return token;
   } else
     return false;
 }
 
 request2(String email, String password) async {
-  dynamic url = 'https://aqueous-cliffs-40873.herokuapp.com/api/shopkeeper/login';
+  dynamic url =
+      'https://aqueous-cliffs-40873.herokuapp.com/api/shopkeeper/login';
 
   Map<String, String> headers = {
     "Content-type": "application/x-www-form-urlencoded"
@@ -227,17 +225,14 @@ request2(String email, String password) async {
 
     String token = decodeJson['token'].toString();
     print(token);
-    
+
     return decodeJson;
   } else
     return false;
 }
-
-
 
 getData() async {
   String url = 'https://aqueous-cliffs-40873.herokuapp.com/api/customer/cur2';
   var response = await http.get(url);
   print(response.body);
 }
-

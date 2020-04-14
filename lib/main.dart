@@ -1,6 +1,8 @@
 import 'package:bmi_calculator/welcome.dart';
 import 'package:flutter/material.dart';
 
+import 'customerpage1.dart';
+
 void main() => runApp(Hackathon());
 
 class Hackathon extends StatelessWidget {
@@ -11,7 +13,7 @@ class Hackathon extends StatelessWidget {
         primaryColor: Color(0xFF0A0E21),
         scaffoldBackgroundColor: Color(0xFF0A0E21),
       ),
-      home: welcome(),
+      home: InputPage(),
     );
   }
 }
