@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'customersignup.dart';
 import 'shopkeepersignup.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:provider/provider.dart';
+import 'dart:convert';
+import 'models.dart';
 
 class welcome extends StatefulWidget {
   @override
@@ -14,6 +16,9 @@ class welcome extends StatefulWidget {
 class _State extends State<welcome> {
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  String email;
+  String password;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +50,14 @@ class _State extends State<welcome> {
                 Container(
                   padding: EdgeInsets.all(10),
                   child: TextField(
+                    onChanged: (value) {
+                      email = value;
+                      setState(() {});
+                    },
+                    onSubmitted: (value) {
+                      email = value;
+                      setState(() {});
+                    },
                     controller: nameController,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
@@ -59,6 +72,15 @@ class _State extends State<welcome> {
                 Container(
                   padding: EdgeInsets.fromLTRB(10, 10, 10, 20),
                   child: TextField(
+                    onChanged: (value) {
+                      password = value;
+                      setState(() {});
+                    },
+                    onSubmitted: (val) {
+                      password = val;
+                      print(val);
+                      setState(() {});
+                    },
                     obscureText: true,
                     controller: passwordController,
                     decoration: InputDecoration(
@@ -78,12 +100,15 @@ class _State extends State<welcome> {
                     color: Color(0xFFEB1555),
                     borderRadius: BorderRadius.circular(30.0),
                     child: MaterialButton(
-                      onPressed: () {
-
+                      onPressed: () async {
+                        var result = await request(email, password);
+                        if(result!= null){
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => InputPage()));
+                        }
+                    
                       },
                       minWidth: 200.0,
                       height: 42.0,
@@ -101,11 +126,14 @@ class _State extends State<welcome> {
                     color: Color(0xFFEB1555),
                     borderRadius: BorderRadius.circular(30.0),
                     child: MaterialButton(
-                      onPressed: () {
+                      onPressed: () async {
+                         var result = await request2(email, password);
+                        if(result){
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => shopkeeper()));
+                        }
                       },
                       minWidth: 200.0,
                       height: 42.0,
@@ -162,3 +190,54 @@ class _State extends State<welcome> {
             )));
   }
 }
+
+request(String email, String password) async {
+  dynamic url = 'https://aqueous-cliffs-40873.herokuapp.com/api/customer/login';
+
+  Map<String, String> headers = {
+    "Content-type": "application/x-www-form-urlencoded"
+  };
+  Map<String, String> json1 = {"email": email, "password": password};
+
+  http.Response response = await http.post(url, body: json1, headers: headers);
+
+  if (response.statusCode == 200) {
+    var decodeJson = json.decode(response.body);
+
+    String token = decodeJson['token'].toString();
+
+    
+    return token;
+  } else
+    return false;
+}
+
+request2(String email, String password) async {
+  dynamic url = 'https://aqueous-cliffs-40873.herokuapp.com/api/shopkeeper/login';
+
+  Map<String, String> headers = {
+    "Content-type": "application/x-www-form-urlencoded"
+  };
+  Map<String, String> json1 = {"email": email, "password": password};
+
+  http.Response response = await http.post(url, body: json1, headers: headers);
+
+  if (response.statusCode == 200) {
+    var decodeJson = json.decode(response.body);
+
+    String token = decodeJson['token'].toString();
+    print(token);
+    
+    return decodeJson;
+  } else
+    return false;
+}
+
+
+
+getData() async {
+  String url = 'https://aqueous-cliffs-40873.herokuapp.com/api/customer/cur2';
+  var response = await http.get(url);
+  print(response.body);
+}
+

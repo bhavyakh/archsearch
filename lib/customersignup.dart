@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class customer extends StatefulWidget {
   @override
@@ -11,6 +12,8 @@ class _State extends State<customer> {
   TextEditingController emailController = TextEditingController();
   TextEditingController pincodeController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  String email,pincode,password,name;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +45,15 @@ class _State extends State<customer> {
                 Container(
                   padding: EdgeInsets.all(10),
                   child: TextField(
+                    
+                    onChanged: (value) {
+                      name = value;
+                      setState(() {});
+                    },
+                    onSubmitted: (value) {
+                      name = value;
+                      setState(() {});
+                    },
                     controller: nameController,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
@@ -58,6 +70,14 @@ class _State extends State<customer> {
                   padding: EdgeInsets.all(10),
                   child: TextField(
                     controller: emailController,
+                    onChanged: (value) {
+                      email = value;
+                      setState(() {});
+                    },
+                    onSubmitted: (value) {
+                      email = value;
+                      setState(() {});
+                    },
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
@@ -74,6 +94,14 @@ class _State extends State<customer> {
                   child: TextField(
                     obscureText: true,
                     controller: passwordController,
+                    onChanged: (value) {
+                      password = value;
+                      setState(() {});
+                    },
+                    onSubmitted: (value) {
+                      password = value;
+                      setState(() {});
+                    },
                     decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
@@ -89,6 +117,14 @@ class _State extends State<customer> {
                 Container(
                   padding: EdgeInsets.all(10),
                   child: TextField(
+                    onChanged: (value) {
+                      pincode = value;
+                      setState(() {});
+                    },
+                    onSubmitted: (value) {
+                      pincode = value;
+                      setState(() {});
+                    },
                     controller: pincodeController,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
@@ -108,7 +144,10 @@ class _State extends State<customer> {
                     color: Color(0xFFEB1555),
                     borderRadius: BorderRadius.circular(30.0),
                     child: MaterialButton(
-                      onPressed: () {},
+                      onPressed: () async{
+                        await request(email,password,pincode,name);
+
+                      },
                       minWidth: 200.0,
                       height: 42.0,
                       child: Text(
@@ -121,4 +160,24 @@ class _State extends State<customer> {
               ],
             )));
   }
+}
+request(String email, String password,String pincode,String name) async {
+  dynamic url = 'https://aqueous-cliffs-40873.herokuapp.com/api/customer/register';
+
+  Map<String, String> headers = {
+    "Content-type": "application/x-www-form-urlencoded"
+  };
+  Map<String, String> json1 = {"email": email, "password": password,"name":name,"pincode":pincode};
+
+  http.Response response = await http.post(url, body: json1, headers: headers);
+
+  if (response.statusCode == 200) {
+    var decodeJson = json.decode(response.body);
+
+    print(decodeJson);
+
+    
+    return decodeJson;
+  } else
+    return false;
 }

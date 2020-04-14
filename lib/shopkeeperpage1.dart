@@ -54,7 +54,7 @@ class shopkeeper extends StatelessWidget {
                           //Do something with the user input
                         },
                         decoration: InputDecoration(
-                          hintText: 'Enter items which are not availabe',
+                          hintText: 'Enter items which are not availabe(separate them with comma)',
                           hintStyle: TextStyle(
                             color: Colors.grey,
                           ),
